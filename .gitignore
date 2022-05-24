@@ -4,6 +4,7 @@
 *.plt
 erl_crash.dump
 .concrete/DEV_MODE
+out
 
 # rebar 2.x
 .rebar
@@ -15,3 +16,4 @@ deps
 .rebar3
 _build/
 _checkouts/
+/.idea/runConfigurations.xml
