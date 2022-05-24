@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module type="JAVA_MODULE" version="4">
+<module type="ERLANG_MODULE" version="4">
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/Official" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/Personal" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/Personal" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Personal/ex1" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Personal/ex2" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/Personal/img" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="Erlang 24" jdkType="Erlang SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
