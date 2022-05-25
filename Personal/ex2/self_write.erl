@@ -10,16 +10,17 @@
 -record(user, {name="Ivan", city="Moscow", acc=0.0}).
 
 %% API
--export([main/0, pow/2, fact/1, calc/2, test_cals/0, three_list/1, reverse/1, aker/2]).
+-export([main/0, pow/2, fact/2, calc/2, test_cals/0, three_list/1, reverse/2, aker/2]).
 
 main() -> io:format("Main").
 
 %Задание 1. Самописные функции возведения в степень и расчёта факториала
-pow(X,1) -> X;
+pow(_X,0) -> 1;
+pow(X,N) when N < 0 -> 1/(X*pow(X,N+1));
 pow(X,N) -> X*pow(X,N-1).
 
-fact(X) when X >= 0 -> 1;
-fact(X) -> X*fact(X-1).
+fact(0,Acc) -> Acc;
+fact(X, Acc) -> fact(X-1, Acc*X).
 
 %Задание 2. Работа с записями-пользователями и расчёт их сбережений
 calc([], Res) -> Res;
@@ -40,9 +41,9 @@ three_list([H|T]) -> [H|T];
 three_list(_) -> error.
 
 %Задание 4. Функция обращения списка
-reverse([]) -> [];
-reverse([H|T]) -> reverse(T)++[H];
-reverse(_) -> error.
+reverse([], _Acc) -> [];
+reverse([H|T], Acc) -> reverse(T, [H|Acc]);
+reverse(_, _) -> error.
 
 %Задание 5. Функция Аккермана
 aker(0,N) when N > 0 -> N + 1;
