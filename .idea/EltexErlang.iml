@@ -15,9 +15,9 @@
       <sourceFolder url="file://$MODULE_DIR$/Personal/ex5" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Personal/ex6" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Personal/ex7" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Official/ex2" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/Official/ex3" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Official/io-list" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Official/records" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Official/recursion" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/Personal/img" />
     </content>
     <orderEntry type="jdk" jdkName="Erlang 24" jdkType="Erlang SDK" />
