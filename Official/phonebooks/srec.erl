@@ -57,7 +57,7 @@ main(OldPB) ->
   main(NewB).
 
 start() ->
-  case read_lines("phones.txt") of
+  case read_lines("phones.csv") of
     error -> main([]);
     File ->
       Out = string:split(File,"\n", all),
@@ -77,10 +77,10 @@ read_lines(FileName) ->
   end.
 
 get_all_lines(Device) ->
-  case io:get_line(Device, "phones.txt") of
+  case io:get_line(Device, "phones.csv") of
     eof  -> [];
     Line -> Line ++ get_all_lines(Device)
   end.
 
 parse([]) -> [];
-parse([H|T])-> [Name, Age, Phone]=string:split(H," ", all), [#person{name=Name, age=list_to_integer(Age), phone=list_to_integer(Phone)}| parse(T)].
+parse([H|T])-> [Name, Age, Phone]=string:split(H,";", all), [#person{name=Name, age=list_to_integer(Age), phone=list_to_integer(Phone)}| parse(T)].

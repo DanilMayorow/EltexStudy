@@ -18,7 +18,7 @@
 %%% ОСНОВНЫЕ ФУНКЦИИ
 %%%-------------------------------------------------------------------
 start() ->
-  case read_lines("phones.txt") of
+  case read_lines("phones.csv") of
     error -> phonebook([]);
     File ->
       Out = string:split(File,"\n", all),
@@ -30,7 +30,7 @@ start() ->
 phonebook(OldB) ->
   {ok, [X]} = io:fread("Choose operation(add,show,del): ", "~a"),
   NewB = case X of
-           add -> {ok,[Name, Info]}=io:fread("Set date(Name Email):","~s~d"), add_user([{Name, Info}],OldB);
+           add -> {ok,[Name, Age, Phone]}=io:fread("Set date(Name Age Phone):","~s~d~d"), add_user([{Name, Age, Phone}],OldB);
            show -> show_book(OldB), OldB;
            del -> {ok,[User]}=io:fread("Set user Name: ","~s"),del_user(User,OldB);
            (_) -> io:format("Good bye!~n"), halt()
@@ -43,11 +43,11 @@ phonebook(OldB) ->
 add_user(Data, Book) -> Book ++ Data.
 
 del_user(_, []) -> [];
-del_user(El,[{Name, _}|T]) when Name == El  -> T;
+del_user(El,[{Name, _, _}|T]) when Name == El  -> T;
 del_user(El, [H|T]) -> [H|del_user(El, T)].
 
 show_book([]) -> ok;
-show_book([{Name, Age}|T]) -> io:format("Name:~s info:~s~n",[Name, Age]),  show_book(T).
+show_book([{Name, Age, Number}|T]) -> io:format("Name:~s Info[age: ~p, number:~p] ~n",[Name, Age, Number]),  show_book(T).
 
 %%%-------------------------------------------------------------------
 %%% ЧТЕНИЕ ДАННЫХ ИЗ ФАЙЛА
@@ -63,10 +63,10 @@ read_lines(FileName) ->
   end.
 
 get_all_lines(Device) ->
-  case io:get_line(Device, "phones.txt") of
+  case io:get_line(Device, "phones.csv") of
     eof  -> [];
     Line -> Line ++ get_all_lines(Device)
   end.
 
 parse([]) -> [];
-parse([H|T])-> [Name, Info]=string:split(H," "), [{Name, Info}| parse(T)].
+parse([H|T])-> [Name, Age, Number]=string:split(H,";", all), [{Name, Age, Number}| parse(T)].
