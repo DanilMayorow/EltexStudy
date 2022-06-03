@@ -8,17 +8,21 @@
 %%%-------------------------------------------------------------------
 -module(serv_tcp).
 -author("Dann Maj").
+-define(ServerPower, 10).
 
 %% API
--export([main/0]).
+-export([main/0, exe/2]).
 
 main() ->
-  {ok, ListenSocket} = gen_tcp:listen(8080, []), exe(ListenSocket).
-exe(LSocket) ->
+  {ok, ListenSocket} = gen_tcp:listen(8080, []),
+  [spawn(?MODULE,exe,[ListenSocket, ID]) || ID <- lists:seq(1, ?ServerPower)], ok.
+
+exe(LSocket, ID) ->
+  io:format("Process #~p is ready~n",[ID]),
   {ok, Socket} = gen_tcp:accept(LSocket),
   receive
     {tcp, Socket, "GET " ++ R} ->
-      io:format("~p~n",[R]),
+      io:format("Process #~p GET: ~p~n",[ID,R]),
       [Page | _] = string:tokens(R, " "),
       {ok, Dir} = file:get_cwd(),
       F = Dir ++ "/www" ++ Page,
@@ -37,9 +41,13 @@ exe(LSocket) ->
              _ -> "application/octet-stream" end, []), file:sendfile(F, Socket);
         E -> response(Socket, E, E)
       end;
-    _ -> E = "405 Not Supported", response(Socket, E, E)
+    _ ->
+      io:format("Process #~p has corrupted request~n",[ID]),
+      E = "405 Not Supported", response(Socket, E, E)
   end,
-  gen_tcp:close(Socket), exe(LSocket).
+  gen_tcp:close(Socket),
+  io:format("Process #~p work is done!~n",[ID]),
+  exe(LSocket, ID).
 
 response(S, H, B) ->
   gen_tcp:send(S, ["HTTP/1.1 ", H, "\r\n\r\n", B]).
