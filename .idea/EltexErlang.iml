@@ -18,6 +18,7 @@
       <sourceFolder url="file://$MODULE_DIR$/Official/io-list" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Official/recursion" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Official/phonebooks" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Official/application/web/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/Personal/img" />
     </content>
     <orderEntry type="jdk" jdkName="Erlang 24" jdkType="Erlang SDK" />
