@@ -11,6 +11,25 @@
 
 %% API
 -export([pow/2, fact/1, to_n/1, a_to_b/2, aker/2, nsum/1, simple/1, ndiv/1, pal/1]).
+-export([main/0, test/2]).
+
+%Основная функция
+main() ->
+  TPW = test([pow,[1024, 1024]], 10),
+  io:format("Pow-function: ~p (avg.:~p mc)~n",[TPW,lists:sum(TPW)/10]),
+  TFQ = test([fact,[1024]], 10),
+  io:format("Factorial: ~p (avg.:~p mc)~n",[TFQ,lists:sum(TFQ)/10]),
+  TAK = test([aker,[4,1]], 10),
+  io:format("Akkerman-function: ~p (avg.:~p mc)~n",[TAK,lists:sum(TAK)/10]),
+  TDV = test([ndiv,[720720]], 10),
+  io:format("Factorization: ~p (avg.:~p mc)~n",[TDV,lists:sum(TDV)/10]).
+
+
+%Функция тестирования ([Функция, Аргументы], Кол-во запусков)
+test([Fun, Arg],N) -> test([Fun, Arg],N, []).
+test(_, 0, Acc) -> Acc;
+test([Fun, Arg], N, Acc) -> {Time,_} = timer:tc(?MODULE,Fun,Arg), test([Fun, Arg], N-1, [Time|Acc]).
+
 
 % Функция возведения в степень
 pow(_X,0) -> 1;

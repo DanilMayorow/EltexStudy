@@ -1,0 +1,48 @@
+%%--------------------------------------------------%%
+%%  Windows 11, IntelliJ IDEA 2021.2.4              %%
+%%  AMD Ryzen 5 3600 6-Core Processor, 16 GB RAM    %%
+%%--------------------------------------------------%%
+
+Eshell V12.3.2  (abort with ^G)
+1> c(recur).
+{ok,recur}
+2> recur:main().
+Pow-function: [409,409,409,409,512,409,409,409,409,512] (avg.:429.6 mc)
+Factorial: [409,409,409,307,409,409,409,409,409,409] (avg.:398.8 mc)
+Akkerman-function: [12197478,12101734,12118016,11952947,12394291,12113100,
+                    12118937,11949056,11946700,12004044] (avg.:12089630.3 mc)
+Factorization: [0,102,102,102,102,0,204,0,0,102] (avg.:71.4 mc)
+3> c(recur,[native]).
+{ok,recur}
+4> recur:main().
+Pow-function: [512,512,409,409,409,512,409,409,512,512] (avg.:460.5 mc)
+Factorial: [307,307,409,512,614,512,409,409,307,409] (avg.:419.5 mc)
+Akkerman-function: [11617909,11650472,11710991,11704130,11784924,11674229,
+                    11590978,11530459,11567323,11570191] (avg.:11640160.6 mc)
+Factorization: [102,102,102,102,0,204,0,0,102,0] (avg.:71.4 mc)
+
+%%--------------------------------------------------%%
+%%  Windows 11, Erlang/OTP 24                       %%
+%%  AMD Ryzen 5 3600 6-Core Processor, 16 GB RAM    %%
+%%--------------------------------------------------%%
+
+Erlang/OTP 24 [erts-12.3.2] [source] [64-bit] [smp:12:12] [ds:12:12:10] [async-threads:1] [jit]
+Eshell V12.3.2  (abort with ^G)
+1> c:cd("C:/Users/Mad Sam/IdeaProjects/EltexErlang/Official/recursion").
+c:/Users/Mad Sam/IdeaProjects/EltexErlang/Official/recursion
+2> c(recur).
+{ok,recur}
+3> recur:main().
+Pow-function: [307,409,512,409,512,409,409,409,409,409] (avg.:419.4 mc)
+Factorial: [512,512,614,307,307,409,409,409,409,409] (avg.:429.7 mc)
+Akkerman-function: [11734937,11811020,11780812,11675955,11655168,11650662,
+                    11650867,11637657,11706777,11726233] (avg.:11703008.8 mc)
+Factorization: [716,0,614,102,614,102,614,102,1433,102] (avg.:439.9 mc)
+4> c(recur,[native]).
+{ok,recur}
+5> recur:main().
+Pow-function: [409,512,409,409,409,409,409,409,512,409] (avg.:429.6 mc)
+Factorial: [409,409,409,307,409,409,409,409,614,307] (avg.:409.1 mc)
+Akkerman-function: [11693568,11782451,11627929,11588198,11673804,11743436,
+                    11611443,11821158,11648921,11333939] (avg.:11652484.7 mc)
+Factorization: [1126,102,614,819,614,1433,102,716,2252,0] (avg.:777.8 mc)

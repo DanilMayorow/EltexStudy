@@ -20,6 +20,7 @@
       <sourceFolder url="file://$MODULE_DIR$/Official/phonebooks" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Official/application/web/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/Personal/img" />
+      <excludeFolder url="file://$MODULE_DIR$/.idea/dataSources" />
     </content>
     <orderEntry type="jdk" jdkName="Erlang 24" jdkType="Erlang SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
