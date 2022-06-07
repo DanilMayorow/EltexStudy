@@ -5,6 +5,7 @@
 erl_crash.dump
 .concrete/DEV_MODE
 out
+/Test
 
 # rebar 2.x
 .rebar
