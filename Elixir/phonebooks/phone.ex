@@ -1,9 +1,9 @@
 defmodule Phone do
   @moduledoc """
-  The main function IOPh.main() first starts the process of reading data from the "phones.csv" file:
+  The main function Phone.main() first starts the process of reading data from the "phones.csv" file:
   read_lines/1 -> parse/1 -> phonebook/1
 
-  If the file is not found, then the process of working with the phonebook/1 phone directory is started with an empty list []
+  If the file is not found, then the process of working with the phonebook/1 phone directory is started with an empty map \#{}
   For a description of the program, see the description of the function phonebook/1
   """
 
@@ -65,7 +65,7 @@ defmodule Phone do
   Private function add_user/1 for adding a user to the phone book
    1. Accepts the old version of the database as input
    2. Asks what data to enter in the format "% Name % Age % Phone Number"
-   3. Brings the data to the correct form and adds to the beginning of the phone book list
+   3. Brings the data to the correct form and adds to the beginning of the phone book map
   """
   @spec add_user(Map.t()) :: Map.t()
   defp add_user(base) do
@@ -75,7 +75,7 @@ defmodule Phone do
   end
 
   @doc """
-  The private function show/1 is a recursive function for displaying the phone book in the terminal
+  The private function show/1 is a recursive function for displaying the phonebook in the terminal
   """
   @spec show(Map.t()) :: Map.t()
   defp show(base) do
