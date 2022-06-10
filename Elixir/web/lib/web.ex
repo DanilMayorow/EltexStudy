@@ -64,11 +64,12 @@ defmodule Web do
   Main server function
   Open listening port and start process of responding
   """
-  @spec main :: :ok
-  def main do
-    {:ok, listen_socket} = :gen_tcp.listen(8080, [])
-    exe(listen_socket, 1)
-    :ok
+  @spec start_link(term()) :: :ok
+  def start_link(port) do
+    {:ok, listen_socket} = :gen_tcp.listen(port, [])
+    IO.puts "Web-server start on #{port} port"
+    Enum.to_list(1..5) |> Enum.map(fn id -> spawn(fn -> exe(listen_socket, id) end) end)
+    {:ok, Kernel.self()}
   end
 
   @doc """
