@@ -21,7 +21,9 @@ defmodule Web.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:myxql, "~> 0.6.0"}
+      {:myxql, "~> 0.6.0"},
+      {:json, "~> 1.4"},
+      {:ex_doc, "~> 0.21", only: :dev, runtime: false}
     ]
   end
 end

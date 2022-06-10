@@ -1,122 +1,154 @@
 defmodule Web do
   @moduledoc """
-  Documentation for `Web`.
+  Web server module
+  Function list:
+  - conn_db/1
+  - read_base/2
+  - json_conv/2
+  - main/0 -
+  - exe/2 -
+  - get_page/2
+  - get_user/2
+  - response/3
   """
 
   @doc """
-
+  The function of accessing the database and obtaining information about users
+  Accept data base user id or 0 by default if we need all base
   """
-  defp conn_db(id) do
+  @spec conn_db(number()) :: map()
+  def conn_db(id \\ 0) do
     {:ok, pid} = MyXQL.start_link(host: "localhost", port: 3300, username: "root", password: "1111", database: "erl")
     read_base(pid, id)
   end
 
+  @doc """
+  Getting data base data function
+  """
+  @spec read_base(pid(), number()) :: map()
   def read_base(pid, id) do
-    {:ok, result_map} = MyXQL.query(pid, "SELECT * FROM users WHERE id = #{id}}")
+    case id do
+      0 ->
+        IO.puts "Getting all users"
+        {:ok, result_map} = MyXQL.query(pid, "SELECT * FROM users")
+        cols = result_map.columns
+        rows = result_map.rows
+        map = Enum.map(rows, fn x -> Enum.zip(cols, x) end)
+        data = json_conv(map)
+        JSON.encode(data)
+      _ ->
+        {:ok, result_map} = MyXQL.query(pid, "SELECT * FROM users WHERE id = #{id}")
+        columns = result_map.columns
+        [row] = result_map.rows
+        case row do
+          [] -> :empty
+          _ ->
+            data = Enum.into(Enum.zip(columns, row), %{})
+            JSON.encode(data)
+        end
+    end
   end
 
   @doc """
-      read_rows(Rows) -> read_rows(Rows, maps:new()).
-  read_rows([], Res) -> Res;
-  read_rows([H|T], Map) ->
-  [ID, Name, Age, Phone] = H, read_rows(T, maps:put(ID, [Name, Age, Phone], Map)).
+  JSON convertation function from data base data to formated map
   """
-  defp read_rows(rows) do
-    
+  @spec json_conv(list(), map()) :: map()
+  def json_conv([], res \\ %{}), do: res
+  def json_conv([head | tail], res) do
+    [{"id", id} | data] = head
+    new_map = Map.put(res, "id-#{id}", Map.new(data))
+    json_conv(tail, new_map)
   end
 
+  @doc """
+  Main server function
+  Open listening port and start process of responding
+  """
+  @spec main :: :ok
   def main do
     {:ok, listen_socket} = :gen_tcp.listen(8080, [])
-    #Enum.to_list(1..5) |> Enum.map(fn id-> spawn(fn -> Web.exe(listen_socket, id) end) end)
     exe(listen_socket, 1)
     :ok
   end
 
   @doc """
-
+  Web server working function
+  Accept Listening socket and web server id
   """
-
-  defp exe(lsoc, id) do
+  @spec exe(term(), number()) :: nil
+  def exe(lsoc, id) do
     IO.puts "Process ##{id} is ready"
     {:ok, socket} = :gen_tcp.accept(lsoc)
     receive do
-      {:tcp, socket, "GET "<> res} ->
-      IO.puts "Process ##{id} GET:#{res}"
-      [req | _ ] = String.split(res, " ")
-      case String.split(req, "/") do
-        [comm, n] when comm == "get_user" ->
-          IO.puts "Request user #{n}"
-          #get_user(req, socket)
-        page ->
-          IO.puts "Another request #{page}"
-          #get_page(req, socket)
-      end
-      _ ->
-      IO.puts "Process ##{id} has corrupted request"
-      ans = "405 Not Supported"
-      response(socket, ans, ans)
+      {:tcp, socket, 'GET ' ++ res} ->
+        request = to_string(res)
+        IO.puts "Process ##{id} GET: #{request}"
+        [req | _] = String.split(request, " ", trim: true)
+        case String.split(req, "/", trim: true) do
+          [comm, n] when comm == "get_user" ->
+            IO.puts "Request user #{n}"
+            get_user(n, socket)
+          page ->
+            IO.puts "Another request #{page}"
+            get_page(req, socket)
+        end
+      another ->
+        IO.inspect(another, label: "Process ##{id} has corrupted request")
+        ans = "405 Not Supported"
+        response(socket, ans, ans)
     end
     :gen_tcp.close(socket)
-    IO.puts "Process ##{id} work is done!}"
-    exe(lsoc,id)
+    IO.puts "Process ##{id} work is done!"
+    exe(lsoc, id)
   end
 
   @doc """
-    get_page(Page, Socket) ->
-  {ok, Dir} = file:get_cwd(),
-  F = Dir ++ "/www" ++ Page,
-  io:format("Page: ~p~n",[F]),
-  case
-    case file:read_file_info(F) of
-      {ok, {_, _, regular, _, _, _, _, _, _, _, _, _, _, _}} -> a;
-      {ok, _} -> "500 Server Error";
+  Function for response on any request exept "/get_user/%id"
+  """
+  @spec get_page(String.t(), term()) :: :ok | {:error, term()}
+  def get_page(page, socket) do
+    {:ok, dir} = File.cwd()
+    file = dir <> "/www" <> page
+    IO.puts "Page: #{file}"
+    file_info = case :file.read_file_info(file) do
+      {:ok, {_, _, :regular, _, _, _, _, _, _, _, _, _, _, _}} -> :correct
+      {:ok, _} -> "500 Server Error"
       _ -> "404 File Not Found"
     end
-  of
-    a -> response(Socket, "200 OK\r\nContent-Type: "
-    ++ case lists:reverse(F) of
-         "lmth." ++ _ -> "text/html";
-         "txt." ++ _ -> "text/plain";
-         _ -> "application/octet-stream" end, []), file:sendfile(F, Socket);
-    E -> response(Socket, E, E)
-  end.
-  """
-  defp get_page(page, socket) do
-
+    case file_info do
+      :correct ->
+        head = case String.reverse(file) do
+          "lmth." <> _ -> "text/html"
+          "txt." <> _ -> "text/plain"
+          _ -> "application/octet-stream"
+        end
+        resp = "200 OK\r\nContent-Type: " <> head
+        response(socket, resp, [])
+        :file.sendfile(file, socket)
+      error ->
+        response(socket, error, error)
+    end
   end
 
   @doc """
-  get_user(N, Socket) ->
-  io:format("Getting user~n"),
-  UserMap = connect(),
-  io:format("~p~n",[UserMap]),
-  Key = list_to_integer(N),
-  case maps:find(Key, UserMap) of
-    error -> Ans = "User Not Found", response(Socket, Ans, Ans);
-    {ok, Data} -> Resp=convert(N,Data), response(Socket, Resp, Resp)
-  end.
+  Function for response on "/get_user/%id" request
   """
-  defp get_user(n, socket) do
-
+  @spec get_user(number(), term()) :: :ok | {:error, term()}
+  def get_user(n, socket) do
+    IO.puts "Getting user##{n}"
+    user = String.to_integer(n)
+    answer = case conn_db(user) do
+      :empty -> "User not found!"
+      {:ok, jdata} -> jdata
+    end
+    response(socket, answer, answer)
   end
 
   @doc """
-  response(S, H, B) ->
-  gen_tcp:send(S, ["HTTP/1.1 ", H, "\r\n\r\n", B]).
+  Function for sending web server answer to user
   """
-  defp response(s, h, b) do
-
+  @spec response(term(), String.t(), term()) :: :ok | {:error, term()}
+  def response(socket, head, data) do
+    :gen_tcp.send(socket, ["HTTP/1.1 ", head, "\r\n\r\n", data])
   end
-
-  @doc """
-    convert(Num,[Name,Age,Phone]) ->
-  "USER #"++Num++" DATA:\n"
-    ++"Name: " ++binary_to_list(Name)
-    ++"\nAge: "++integer_to_list(Age)
-    ++"\nPhone: "++integer_to_list(trunc(Phone)).
-  """
-  defp convert(n, [name,age,phone]) do
-
-  end
-
 end
