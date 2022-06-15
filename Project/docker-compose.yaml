@@ -1,0 +1,12 @@
+version: "3"
+services:
+  fastagi:
+    image: dougbtv/fastagi
+    ports:
+      - "4573:4573"
+  asterisk:
+    image: dougbtv/asterisk
+    ports:
+      - "5060:5060/udp"
+      - "5060:5060/tcp"
+      - "10000-10010:10000-10010/udp"
