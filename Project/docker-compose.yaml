@@ -1,11 +1,7 @@
 version: "3"
 services:
-  fastagi:
-    image: dougbtv/fastagi
-    ports:
-      - "4573:4573"
   asterisk:
-    image: dougbtv/asterisk
+    image: andrius/asterisk:11.25.3
     ports:
       - "5060:5060/udp"
       - "5060:5060/tcp"

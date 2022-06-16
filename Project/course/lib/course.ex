@@ -1,18 +1,15 @@
 defmodule Course do
-  @moduledoc """
-  Documentation for `Course`.
-  """
+  use Sippet.Core
 
-  @doc """
-  Hello world.
+  def receive_request(incoming_request, server_key) do
+    # route the request to your UA or proxy process
+  end
 
-  ## Examples
+  def receive_response(incoming_response, client_key) do
+    # route the response to your UA or proxy process
+  end
 
-      iex> Course.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  def receive_error(reason, client_or_server_key) do
+    # route the error to your UA or proxy process
   end
 end
