@@ -1,0 +1,16 @@
+{application, try_nksip,
+ [{description, "An OTP application"},
+  {vsn, "0.1.0"},
+  {registered, []},
+  {mod, {try_nksip_app, []}},
+  {applications,
+   [kernel,
+    stdlib,
+    nksip
+   ]},
+  {env,[]},
+  {modules, []},
+
+  {licenses, ["Apache 2.0"]},
+  {links, []}
+ ]}.
