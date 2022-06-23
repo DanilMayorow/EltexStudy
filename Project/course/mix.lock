@@ -1,6 +1,0 @@
-%{
-  "elixir_make": {:hex, :elixir_make, "0.6.3", "bc07d53221216838d79e03a8019d0839786703129599e9619f4ab74c8c096eac", [:mix], [], "hexpm", "f5cbd651c5678bcaabdbb7857658ee106b12509cd976c2c2fca99688e1daf716"},
-  "gen_state_machine": {:hex, :gen_state_machine, "3.0.0", "1e57f86a494e5c6b14137ebef26a7eb342b3b0070c7135f2d6768ed3f6b6cdff", [:mix], [], "hexpm", "0a59652574bebceb7309f6b749d2a41b45fdeda8dbb4da0791e355dd19f0ed15"},
-  "sippet": {:hex, :sippet, "1.0.10", "35bd21dc2b59c99f29c91dffa79580a13d305a8bc4fa86299d716a40adca2086", [:mix], [{:elixir_make, "~> 0.4", [hex: :elixir_make, repo: "hexpm", optional: false]}, {:gen_state_machine, ">= 3.0.0", [hex: :gen_state_machine, repo: "hexpm", optional: false]}, {:sippet_uri, "~> 0.1", [hex: :sippet_uri, repo: "hexpm", optional: false]}], "hexpm", "cfe6a58a6e270d817946e21c9473ae432b67e99533343f21e888fd4aba1c0eb6"},
-  "sippet_uri": {:hex, :sippet_uri, "0.1.0", "ec8bfe6df12e17c0ca32b18b2177585426448bf3e3b0434f5ddfb93dc075add2", [:mix], [], "hexpm", "e8b1ad3fdd12670b4e9851a273624a7ed4b12cf5e705dec7906204c294d9790b"},
-}
