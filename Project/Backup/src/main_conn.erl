@@ -1,11 +1,11 @@
--module(nk_user).
+-module(main_conn).
 
 -export([test/0]).
 
 -define(DOMAIN, "192.168.2.36").
 
 test() ->
-    Client1 = string:concat("sip:1001@", ?DOMAIN),
+    Client1 = string:concat("sip:1000@", ?DOMAIN),
     nksip:start_link(client1, 
         #{sip_from => Client1,
           plugins => [nksip_uac_auto_auth],
@@ -26,4 +26,4 @@ test() ->
     
     % nksip_uac:bye(DlgId, []),
 
-    {ok, self()}.   %% for correct exit without error(bad_return)
+    {ok, self()}.
