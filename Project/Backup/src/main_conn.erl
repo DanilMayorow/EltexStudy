@@ -22,15 +22,15 @@ test() ->
     [{sip_pass, "12345"}, contact, {meta, ["contact"]}]),
   io:format("Register~n"),
 
-  Client2 = string:concat("sip:1002@", ?IP),
+  Client2 = string:concat("sip:1001@", ?IP),
 
   SDP = #sdp{address = {<<"IN">>, <<"IP4">>, erlang:list_to_binary(?IP)},
     connect = {<<"IN">>, <<"IP4">>, erlang:list_to_binary(?IP)},
     time = [{0, 0, []}],
     medias = [#sdp_m{media = <<"audio">>,
-      port = 10000,
+      port = 9990,
       proto = <<"RTP/AVP">>,
-      fmt = [<<"0">>, <<"101">>],
+      fmt = [<<"0">>, <<"8">>, <<"101">>, <<"127">>],
       attributes = [{<<"sendrecv">>, []}]
     }
     ]
@@ -40,7 +40,7 @@ test() ->
     {add, "x-nk-prov", true},
     {add, "x-nk-sleep", 8000},
     auto_2xx_ack,
-    {sip_dialog_timeout, 20000},   % TODO: fix timeout
+    {sip_dialog_timeout, 45000},   % TODO: fix timeout
     {sip_pass, "12345"},
     {body, SDP}
   ],
@@ -56,9 +56,15 @@ invite(Acc, Client2, InviteOps) when Acc > 0 ->
       io:format("Success ~p try~n", [Acc]),
       {ok, SDPRemoteVoice} = nksip_dialog:get_meta(invite_remote_sdp, DlgId),
       erlang:display(nksip_dialog:get_metas([invite_status,invite_answered,invite_local_sdp,invite_remote_sdp,invite_timeout],DlgId)),
-      %[SDP_M | _] = SDPRemoteVoice#sdp.medias,
-      %Port = SDP_M#sdp_m.port,
-      %erlang:display(Port),
+      [SDP_M | _] = SDPRemoteVoice#sdp.medias,
+      Port = SDP_M#sdp_m.port,
+      erlang:display(Port),
+      ConvertVoice = "ffmpeg -i priv/voice/generate.wav -codec:a pcm_mulaw -ar 8000 -ac 1 priv/voice/output.wav",
+      StartVoice = "./voice_client priv/voice/output.wav " ++ "192.168.2.36" ++ " " ++ erlang:integer_to_list(Port), %erlang:binary_to_list(IPR)
+      Cmd = "echo Convert" ++ " && " ++ ConvertVoice ++ " -y && echo Start" ++ " && " ++ StartVoice,
+      timer:sleep(10000),
+      Res = os:cmd(Cmd),
+      io:format("Res: ~n~s",[Res]),
       timer:sleep(30000),
       nksip_uac:bye(DlgId, []),
       {ok, self()};
