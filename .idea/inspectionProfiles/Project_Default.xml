@@ -1,0 +1,7 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="ErlangUnresolvedIncludeLib" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="ErlangUnresolvedRecord" enabled="false" level="ERROR" enabled_by_default="false" />
+  </profile>
+</component>

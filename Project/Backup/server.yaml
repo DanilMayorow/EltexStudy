@@ -1,0 +1,12 @@
+version: "3.4"
+services:
+  erl:
+    build:
+      context: ""
+      network: host
+    image: dannmaj/erl:test
+    stdin_open: true
+    tty: true
+    container_name: pbx-tst
+    volumes:
+      - ./src:/app/src
