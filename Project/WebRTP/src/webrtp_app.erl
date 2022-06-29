@@ -1,16 +1,16 @@
 %%%-------------------------------------------------------------------
-%% @doc websip public API
+%% @doc webrtp public API
 %% @end
 %%%-------------------------------------------------------------------
 
--module(websip_app).
+-module(webrtp_app).
 
 -behaviour(application).
 
 -export([start/2, stop/1]).
 
 start(_StartType, _StartArgs) ->
-    websip_sup:start_link().
+    webrtp_sup:start_link().
 
 stop(_State) ->
     ok.

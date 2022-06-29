@@ -6,7 +6,6 @@
 
 -define(IP, "192.168.2.36").
 -define(DOMAIN, "ltx").
--define(RECV, "172.19.0.2").
 
 test() ->
 
@@ -40,7 +39,7 @@ test() ->
     {add, "x-nk-prov", true},
     {add, "x-nk-sleep", 8000},
     auto_2xx_ack,
-    {sip_dialog_timeout, 45000},   % TODO: fix timeout
+    {sip_dialog_timeout, 45000},
     {sip_pass, "12345"},
     {body, SDP}
   ],
@@ -59,15 +58,20 @@ invite(Acc, Client2, InviteOps) when Acc > 0 ->
       [SDP_M | _] = SDPRemoteVoice#sdp.medias,
       Port = SDP_M#sdp_m.port,
       erlang:display(Port),
-      ConvertVoice = "ffmpeg -i priv/voice/generate.wav -codec:a pcm_mulaw -ar 8000 -ac 1 priv/voice/output.wav",
+      Message = "Проверка курсовой работы Майорова Данила",
+      GenVoice = "wget -O priv/voice/generate.wav \"https://tts.voicetech.yandex.net/generate?format=wav&lang=ru_RU&key=069b6659-984b-4c5f-880e-aaedcfd84102&text="
+        ++ string:join(string:tokens(Message," "),"%20") ++ "\"",
+      ConvertVoice = "ffmpeg -i priv/voice/generate.wav -codec:a pcm_mulaw -ar 8000 -ac 1 priv/voice/output.wav -y",
       StartVoice = "./voice_client priv/voice/output.wav " ++ "192.168.2.36" ++ " " ++ erlang:integer_to_list(Port), %erlang:binary_to_list(IPR)
-      Cmd = "echo Convert" ++ " && " ++ ConvertVoice ++ " -y && echo Start" ++ " && " ++ StartVoice,
-      timer:sleep(10000),
+      Cmd = "echo Generate &&" ++ GenVoice
+        ++ " && echo Convert" ++ " && " ++ ConvertVoice
+        ++ " && echo Start" ++ " && " ++ StartVoice,
+      timer:sleep(3000),
       Res = os:cmd(Cmd),
       io:format("Res: ~n~s",[Res]),
-      timer:sleep(30000),
+      timer:sleep(15000),
       nksip_uac:bye(DlgId, []),
-      {ok, self()};
+      {stop, normal};
     _Error ->
       io:format("Fail on ~p try, wait and repeat~n", [Acc]),
       timer:sleep(4000),

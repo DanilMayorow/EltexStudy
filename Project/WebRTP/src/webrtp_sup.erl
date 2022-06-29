@@ -1,9 +1,9 @@
 %%%-------------------------------------------------------------------
-%% @doc websip top level supervisor.
+%% @doc webrtp top level supervisor.
 %% @end
 %%%-------------------------------------------------------------------
 
--module(websip_sup).
+-module(webrtp_sup).
 
 -behaviour(supervisor).
 
@@ -16,19 +16,8 @@
 start_link() ->
     supervisor:start_link({local, ?SERVER}, ?MODULE, []).
 
-%% sup_flags() = #{strategy => strategy(),         % optional
-%%                 intensity => non_neg_integer(), % optional
-%%                 period => pos_integer()}        % optional
-%% child_spec() = #{id => child_id(),       % mandatory
-%%                  start => mfargs(),      % mandatory
-%%                  restart => restart(),   % optional
-%%                  shutdown => shutdown(), % optional
-%%                  type => worker(),       % optional
-%%                  modules => modules()}   % optional
 init([]) ->
-    {ok, _IP} = application:get_env(websip, webserv_ip),
-    {ok, Port} = application:get_env(websip, webserv_port),
-    {ok, ListenSock} = gen_tcp:listen(Port, [binary, {active, false}, {packet, 0}]),
+    {ok, ListenSock} = gen_tcp:listen(8080, [binary, {active, false}, {packet, 0}, {reuseaddr, true}]),
     spawn_link(fun initial_listeners/0),
 
     SupFlags = #{strategy => simple_one_for_one,

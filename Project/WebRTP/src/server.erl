@@ -35,7 +35,7 @@ handle_cast(listen, State) ->
     {noreply, State#state{socket=AcceptSock}};
 
 handle_cast({receiverd, Packet}, State) ->
-    websip_sup:start_listener(),
+    webrtp_sup:start_listener(),
     AcceptSock = State#state.socket,
     Response = get_response(State, Packet),
     gen_tcp:send(AcceptSock, Response),
@@ -54,7 +54,7 @@ handle_info({tcp_closed, _ClientSocket}, State) ->
     AcceptSock = State#state.socket,
     gen_tcp:close(AcceptSock),
     lager:info("Session closed in [~p] and thread will be restart now", [erlang:self()]),
-    websip_sup:start_listener(),
+    webrtp_sup:start_listener(),
     {stop, normal, State}.
 
 terminate(_Reason, _State) ->
@@ -68,8 +68,8 @@ code_change(_OldVersion, State, _Extra) ->
 get_response(State, Packet) ->
     AcceptSock = State#state.socket,
     inet:setopts(AcceptSock, [{active, once}]),
-    case websip:parse_packet(Packet) of 
-        {ok, get, Packet} -> websip:get_page();
-        {ok, post, Phone, Text} -> websip:post(Phone, Text);
-        {C, R, S} -> websip:get_error_page({C, R, S})
+    case webrtp:parse_packet(Packet) of
+        {ok, get, Packet} -> webrtp:get_page(init);
+        {ok, post, Phone, Text} -> webrtp:post(Phone, Text);
+        {C, R, S} -> webrtp:get_error_page({C, R, S})
     end.

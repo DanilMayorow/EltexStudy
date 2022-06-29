@@ -26,5 +26,3 @@ init([]) ->
     shutdown => brutal_kill
   }],
   {ok, {SupFlags, ChildSpecs}}.
-
-%% internal functions

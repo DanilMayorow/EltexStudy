@@ -2,3 +2,5 @@ Dockerfile
 docker-compose.yaml
 .git
 .idea
+_build
+useless

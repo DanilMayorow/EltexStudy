@@ -26,6 +26,8 @@
       <excludeFolder url="file://$MODULE_DIR$/Personal/img" />
       <excludeFolder url="file://$MODULE_DIR$/.idea/dataSources" />
       <excludeFolder url="file://$MODULE_DIR$/Project/Backup/useless" />
+      <excludeFolder url="file://$MODULE_DIR$/Project/Websip-Test" />
+      <excludeFolder url="file://$MODULE_DIR$/Backup" />
     </content>
     <orderEntry type="jdk" jdkName="Erlang 24" jdkType="Erlang SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

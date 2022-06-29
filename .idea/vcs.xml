@@ -12,5 +12,13 @@
     <mapping directory="$PROJECT_DIR$/Project/Curs-ref/Websip-Test/_build/default/lib/nksip" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/Project/Curs-ref/Websip-Test/_build/default/lib/ranch" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/Project/Websip-Test" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Project/Websip-Test/_build/default/lib/cowboy" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Project/Websip-Test/_build/default/lib/cowlib" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Project/Websip-Test/_build/default/lib/gun" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Project/Websip-Test/_build/default/lib/nklib" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Project/Websip-Test/_build/default/lib/nkpacket" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Project/Websip-Test/_build/default/lib/nkserver" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Project/Websip-Test/_build/default/lib/nksip" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Project/Websip-Test/_build/default/lib/ranch" vcs="Git" />
   </component>
 </project>
